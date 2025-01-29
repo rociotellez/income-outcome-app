@@ -13,14 +13,15 @@ export class SidebarComponent {
   constructor(private authService: AuthService, private router: Router) { }
 
   logout(){
-    this.authService.logoutUser()
-      .then(response => {
+    this.authService.logout()
+    this.router.navigate(['/login']);
+      /*.then(response => {
         console.log(response);
         this.router.navigate(['/login']);
       })
       .catch(error => {
         console.error(error);
-      });
+      });*/
 
   }
 
