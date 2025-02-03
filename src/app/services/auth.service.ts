@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import * as authActions from '../auth/auth.actions';
+import * as incomeOutcomeActions from '../income-outcome/income-outcome.actions';
 import { User } from '../models/user.model';
 
 interface AuthEvent {
@@ -17,6 +18,7 @@ interface AuthEvent {
 })
 export class AuthService {
   private authEvents = new Subject<AuthEvent>();
+  private _user: User | null = null;
 
   constructor(private store: Store) { }
 
@@ -27,12 +29,14 @@ export class AuthService {
       console.log('Auth event:', authEvent.eventType);
       if ( authEvent.eventResponse.user ) {
         user = authEvent.eventResponse.user;
+        this._user = user;
         this.store.dispatch( authActions.setUser({ user }) );
         console.log('User:', user); 
 
       } else {
+        this._user = null;
         this.store.dispatch( authActions.unSetUser() );
-        
+        this.store.dispatch( incomeOutcomeActions.unsetItems() );
       }
       
     });
@@ -57,7 +61,7 @@ export class AuthService {
         } else {
           // Mock success response
           let user: User = {
-            id: this.generateRandomId(),
+            uid: this.generateRandomId(),
             name: name,
             email: email
           };
@@ -87,7 +91,7 @@ export class AuthService {
         } else {
           // Mock success response
           let user: User = {
-            id: this.generateRandomId(),
+            uid: this.generateRandomId(),
             name: 'User',
             email: email
           };
@@ -105,5 +109,9 @@ export class AuthService {
   logout() {
     console.log('User logged out');
     this.authEvents.next({ eventType: 'User logged out', eventResponse: { user: null, message: 'User logged out' } });
+  }
+
+  get user() {
+    return { ...this._user };
   }
 }
