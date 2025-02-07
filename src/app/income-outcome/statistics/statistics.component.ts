@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.reducer';
 import { IncomeOutcome } from '../../models/income-outcome.model';
+import { AppStateWithIncomeOutcome } from '../income-outcome.reducer';
 
 @Component({
   selector: 'app-statistics',
@@ -16,7 +16,7 @@ export class StatisticsComponent implements OnInit{
   totalIncome: number = 0;
   totalOutcome: number = 0;
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppStateWithIncomeOutcome>) { }
 
   ngOnInit(): void {
     this.store.select('incomeOutcome').subscribe( ({ items }) => {

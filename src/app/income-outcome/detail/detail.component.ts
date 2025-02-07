@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../app.reducer';
 import { IncomeOutcome } from '../../models/income-outcome.model';
 import { Subscription } from 'rxjs';
 import { IncomeOutcomeService } from '../../services/income-outcome.service';
 import Swal from 'sweetalert2';
+import { AppStateWithIncomeOutcome } from '../income-outcome.reducer';
 
 @Component({
   selector: 'app-detail',
@@ -17,7 +17,7 @@ export class DetailComponent implements OnInit, OnDestroy {
   incomeOutcome: IncomeOutcome[] = [];
   subscription: Subscription = new Subscription();
 
-  constructor(private store: Store<AppState>,
+  constructor(private store: Store<AppStateWithIncomeOutcome>,
     private incomeOutcomeService: IncomeOutcomeService
   ) { }
 
